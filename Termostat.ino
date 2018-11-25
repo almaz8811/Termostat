@@ -47,12 +47,13 @@ char auth[] = "31f94ba459c14d2bbd24b8c90244aae7";
 
 // Your WiFi credentials.
 // Set password to "" for open networks.
-char ssid[] = "QtechRouter-115e";
-char pass[] = "Q6K7TGR5";
+char ssid[] = "DSL-2750U";
+char pass[] = "02071984";
 int tempSlider = 18;
 int exSlider = 2;
 int otoplen = 1;
 int ventel = 0;
+int led = 7;
 float h;
 float t;
 
@@ -93,6 +94,12 @@ BLYNK_WRITE(V1) //Кнопка вентелятора
   
 }
 
+BLYNK_WRITE(V2) //Яркость подсветки
+{
+  led = param.asInt();
+  disp.set(led);  // яркость, 0 - 7 (минимум - максимум)    
+}
+
 //Эта функция отправляет данные датчика на 5 и 6 виртуальный пин, каждые несколько секунд
 void sendSensor() {
   h = dht.readHumidity();
@@ -109,6 +116,8 @@ void sendSensor() {
   
   disp.display(0,int(t)/10);
   disp.display(1,int(t)%10);
+  disp.display(2,16);
+  disp.display(3,12);
 
 }
 
@@ -185,7 +194,7 @@ void setup()
   dht.begin();
   //Инициализация дисплея
   disp.init();  // инициализация
-  disp.set(7);  // яркость, 0 - 7 (минимум - максимум)
+  disp.set(led);  // яркость, 0 - 7 (минимум - максимум)
   disp.point(0); // Отключить двоеточие
   Blynk.virtualWrite(V10, tempSlider);
   Blynk.virtualWrite(V11, exSlider);
